@@ -1,7 +1,26 @@
 import sys
 from storops import UnitySystem
+from flask import Flask
+from flask import render_template, request, url_for, redirect
 import warnings
 warnings.filterwarnings("ignore")
+
+app = Flask(__name__)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    user = ''
+    if request.method == "POST":
+
+        info = request.form.to_dict()
+        arr = info['array']
+
+        user = (f'Connected to {arr} &nbsp;&nbsp;<button type="button" class="btn btn-secondary" value="value" onclick="button_click()" id="show-connect-btn">Disconnect</button>')
+
+    #main()
+    print(user)
+    return render_template("index.html", name=user)
 
 
 def main():
@@ -19,6 +38,9 @@ def main():
         password = sys.argv[3]
     unity = UnitySystem(ip, user, password)
 
+    for host in unity.get_host():
+        print(host.name)
+
     for host_idx, host in enumerate(unity.get_host()):
         server_name = str(host.name)
         # print(server_name, '(' + str(len(host.host_luns.list)) + ')')
@@ -33,5 +55,4 @@ def main():
         print(a, b)
 
 
-if __name__ == '__main__':
-    main()
+app.run(debug=True, use_reloader=True)
