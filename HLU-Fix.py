@@ -16,12 +16,18 @@ def index():
         info = request.form.to_dict()
         arr = info['array']
 
-        user = (f'Connected to {arr} &nbsp;&nbsp;<button type="button" class="btn btn-secondary" value="value" onclick="button_click()" id="show-connect-btn">Disconnect</button>')
+        user = (f'Connected to {arr}')
+
 
     #main()
     print(user)
     return render_template("index.html", name=user)
 
+
+@app.route('/disconnect', methods=['GET', 'POST'])
+def disconnect():
+    user = ''
+    return render_template("index.html", name=user)
 
 def main():
     ip = ''

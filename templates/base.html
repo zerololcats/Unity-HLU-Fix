@@ -75,9 +75,7 @@
                 selectedListLabel: 'Selected LUNs'
                 });
 
-                /* var list = $('#server_listbox').multiSelect({
-                    showFilterInputs: false
-                }); */
+
 
                 $("#connect-btn").click(function(e) {
                     e.preventDefault();
@@ -88,7 +86,8 @@
                         success: function(data) {
                             var result = $('<div />').append(data).find('#mensaje').html();
                             $('#mensaje').html(result);
-                            console.log(result)
+
+                            // This sets the value of the #mensaje span to the return value of the index() function from flask
                         },
                         error: function(error) {
                             console.log(error);
@@ -103,8 +102,33 @@
                     mySpan = document.getElementById('hide-me1');
                     mySpan.style.display = "none";
                 });
-            });
 
+                // Function for click event of the disconnect button that was
+                // rendered dynamically from the disconnect.html template
+
+                $("#disconnect-btn").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "POST",
+                        url: "/disconnect",
+                        data: $('form').serialize(),
+                        success: function(data) {
+                            var mySpan = document.getElementById('hide-me2');
+                            mySpan.style.display = "none";
+                            mySpan = document.getElementById('hide-me1');
+                            mySpan.style.display = "";
+
+                           // once the bottom span has been hidden and the top one is showing
+                           // clear the value of the #mensaje span
+
+                            $('#mensaje').html('');
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            });
         </script>
     </body>
 </html>

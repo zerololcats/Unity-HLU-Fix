@@ -20,7 +20,7 @@
       <span id="hide-me2" style="display:none">
          <div class="row">
             <div class="col-5 mx-sm-3 form-group">
-               <select  size="10" multiple="multiple" name="server_listbox">
+               <select  multiple="multiple" style="height: 300px;" name="server_listbox">
                   <option value="option1">Option 1</option>
                   <option value="option2">Option 2</option>
                   <option value="option3" selected="selected">Option 3</option>
@@ -34,6 +34,12 @@
                </select>
             </div>
          </div>
+         <div class="row">
+            <div class="col-5 mx-sm-3 form-group">
+               {% include 'disconnect.html' %}
+            </div>
+         </div>
+
       </span>
    </form>
    </div>
