@@ -2,15 +2,29 @@
 {% block title %}Unity HLU Fix{% endblock %}
 
 {% block content %}
-<span id="mensaje">{{ name | safe }}</span>
+<span id="mensaje">
+   {% if data is defined and data|length %}
+      Connected to {{  data.array_name }} (OE: {{ data.array_OE }})
+   {% endif %}
+</span>
 
 
    <div class="container">
    <form action="/" method="post" role="form">
       <span id="hide-me1">
-         <div class="col-sm form-group">
-            <label for="array">Enter IP of Unity array</label>
-            <input type="text" class="form-control" id="array" name="array">
+         <div class="col-2 form-group">
+            <label for="ip">Enter IP of Unity array</label>
+            <input type="text" value="10.15.68.117" class="form-control" id="ip" name="ip">
+         </div>
+
+         <div class="col-3 form-group">
+            <label for="username">User Name</label>
+            <input type="text" value="jose9708@storage.rackspace.com" class="form-control" id="username" name="username">
+         </div>
+
+         <div class="col-3 form-group">
+            <label for="password">Password</label>
+            <input type="password" value="jo915ma1089jo478!!10" size="5" class="form-control" id="password" name="password">
          </div>
 
          <div class="col-3 form-group">
@@ -20,18 +34,15 @@
       <span id="hide-me2" style="display:none">
          <div class="row">
             <div class="col-5 mx-sm-3 form-group">
-               <select  multiple="multiple" style="height: 300px;" name="server_listbox">
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3" selected="selected">Option 3</option>
-                  <option value="option4">Option 4</option>
-                  <option value="option5">Option 5</option>
-                  <option value="option6" selected="selected">Option 6</option>
-                  <option value="option7">Option 7</option>
-                  <option value="option8">Option 8</option>
-                  <option value="option9">Option 9</option>
-                  <option value="option0">Option 10</option>
-               </select>
+               <span id="multi-select">
+                  <select  multiple="multiple" style="height: 300px;" name="server_listbox">
+                        {% if data is defined and data|length %}
+                           {% for host in data.host_list.name %}
+                              <option value="{{host}}">{{host}}</option>
+                           {% endfor %}
+                        {% endif %}
+                  </select>
+               </span>
             </div>
          </div>
          <div class="row">

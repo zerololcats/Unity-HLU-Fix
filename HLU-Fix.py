@@ -10,18 +10,29 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    user = ''
+    data = ''
     if request.method == "POST":
 
         info = request.form.to_dict()
-        arr = info['array']
+        # array = ip address of Unity array from inputbox
+        ip = info['ip']
+        username = info['username']
+        password = info['password']
 
-        user = (f'Connected to {arr}')
+        unity = UnitySystem(ip, username, password)
+        hosts = unity.get_host()
 
+        data = dict(
+            array_name=unity.name,
+            array_OE=unity.system_version,
+            host_list=hosts
+        )
+        for host in data['host_list']:
+            print(host.name)
 
-    #main()
-    print(user)
-    return render_template("index.html", name=user)
+        #user = f'Connected to {unity.name} (OE: {unity.system_version})'
+
+    return render_template("index.html", data=data)
 
 
 @app.route('/disconnect', methods=['GET', 'POST'])
@@ -29,24 +40,10 @@ def disconnect():
     user = ''
     return render_template("index.html", name=user)
 
-def main():
-    ip = ''
-    user = ''
-    password = ''
+
+def get_luns(unity, hosts):
     host_list = []
     lun_list = []
-
-    if len(sys.argv) < 4:
-        print('Not enough arguments \n\n  Usage:\n   HLU-Fix.py  <ip> <username> <password>')
-    else:
-        ip = sys.argv[1]
-        user = sys.argv[2]
-        password = sys.argv[3]
-    unity = UnitySystem(ip, user, password)
-
-    for host in unity.get_host():
-        print(host.name)
-
     for host_idx, host in enumerate(unity.get_host()):
         server_name = str(host.name)
         # print(server_name, '(' + str(len(host.host_luns.list)) + ')')
