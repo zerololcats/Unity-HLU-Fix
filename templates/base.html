@@ -69,13 +69,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.1/jquery.bootstrap-duallistbox.js"></script>
         <script type=text/javascript>
             $(document).ready(function(){
-                var demo1 = $('select[name="server_listbox"]').bootstrapDualListbox({
-                showFilterInputs: false,
-                nonSelectedListLabel: 'Available LUNs',
-                selectedListLabel: 'Selected LUNs'
-                });
-
-
+                // This functions performs the following actions:
+                // 1. Trigger an AJAX Post request to / to be handled by the index() function
+                // 2. Updates the div at the top of the page with the result of the array name and OE version
+                // 3. Updates the div with the host multiselect listbox
+                // 4. Sets some initial values on the multiselect listbox
+                // 5. Unhides the div for the listbox
 
                 $("#connect-btn").click(function(e) {
                     e.preventDefault();
@@ -87,6 +86,19 @@
                             var result = $('<div />').append(data).find('#mensaje').html();
                             $('#mensaje').html(result);
 
+                            var result = $('<div />').append(data).find('#multi-select').html();
+                            $('#multi-select').html(result);
+
+                            var demo1 = $('select[name="server_listbox"]').bootstrapDualListbox({
+                            showFilterInputs: false,
+                            nonSelectedListLabel: 'Available Hosts',
+                            selectedListLabel: 'Clustered Hosts'
+                            });
+
+                            // Shows the LUN selector listbox once the 'Connect' button is pressed
+                            var mySpan = document.getElementById('hide-me2');
+                            mySpan.style.display = "";
+
                             // This sets the value of the #mensaje span to the return value of the index() function from flask
                         },
                         error: function(error) {
@@ -94,9 +106,7 @@
                         }
                     });
 
-                    // Shows the LUN selector listbox once the 'Connect' button is pressed
-                    var mySpan = document.getElementById('hide-me2');
-                    mySpan.style.display = "";
+
 
                     // Hides the 'Connect' button and input box
                     mySpan = document.getElementById('hide-me1');
